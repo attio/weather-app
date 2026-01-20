@@ -1,0 +1,29 @@
+{
+    "name": "weather",
+    "description": "Weather App",
+    "private": true,
+    "version": "0.0.1",
+    "scripts": {
+        "attio": "attio",
+        "dev": "attio dev",
+        "build": "attio build",
+        "format": "biome format .",
+        "format-fix": "npx biome format --write .",
+        "clean": "rm -rf lib && rm -rf dist",
+        "lint": "npx biome lint .",
+        "test": ""
+    },
+    "devDependencies": {
+        "@biomejs/biome": "2.1.2",
+        "@types/node": "^24.0.4",
+        "@types/react": "19.1.0",
+        "node-fetch": "3.3.2",
+        "typescript": "5.8.3"
+    },
+    "dependencies": {
+        "@tanstack/react-query": "^5.90.17",
+        "attio": "latest",
+        "react": "19.1.0",
+        "zod": "^4.0.14"
+    }
+}
