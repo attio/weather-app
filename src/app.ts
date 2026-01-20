@@ -1,13 +1,17 @@
 import type {App} from "attio"
 
+import weatherWidget from "./record/widgets/current-forecast"
+import workspaceSettings from "./settings/workspace-settings"
+import {showWeatherForecast} from "./record/actions/weather-forecast"
+
 export const app: App = {
     record: {
         /** @see https://docs.attio.com/sdk/entry-points/record-action  */
-        actions: [],
+        actions: [showWeatherForecast],
         /** @see https://docs.attio.com/sdk/entry-points/bulk-record-action */
         bulkActions: [],
         /** @see https://docs.attio.com/sdk/entry-points/record-widget */
-        widgets: [],
+        widgets: [weatherWidget],
     },
     callRecording: {
         /** @see https://docs.attio.com/sdk/entry-points/call-recording-insight-text-selection-action */
@@ -22,5 +26,8 @@ export const app: App = {
         transcript: {
             textActions: [],
         },
+    },
+    settings: {
+        workspace: workspaceSettings,
     },
 }
