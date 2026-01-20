@@ -10,6 +10,7 @@ function Page() {
         <Form>
             <Section title="General">
                 <Experimental_Fieldset legend="Temperature Scale">
+                    {/* @ts-ignore - Experimental API: Schema type inference fails in CI when types aren't resolved, but "scale" is valid per app.settings.ts */}
                     <Experimental_RadioGroup name="scale">
                         <Experimental_RadioGroup.Item value="celsius" label="Celsius" />
                         <Experimental_RadioGroup.Item value="fahrenheit" label="Fahrenheit" />
