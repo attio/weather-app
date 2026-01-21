@@ -5,7 +5,7 @@ import getCompanyLocationById, {
 import getPersonLocationById, {
     type GetPersonLocationByIdQuery,
 } from "../graphql/get-person-location-by-id.graphql"
-import {extractLocationData, type LocationData} from "../utils/location"
+import {extractLocationData, formatLocationString, type LocationData} from "../utils/location"
 
 /**
  * Interface for person location data.
@@ -33,13 +33,17 @@ interface CompanyLocation extends LocationData {
  * This hook retrieves location information for a person record from the Attio GraphQL API,
  * with fallback to their company's location if the person has no direct location.
  */
-export function usePersonLocation(recordId: string): PersonLocation {
+export function usePersonLocation(recordId: string): PersonLocation | null {
     const {person} = useQuery(getPersonLocationById, {recordId})
 
     const locationData = extractLocationData(
         person?.primary_location,
         person?.company?.primary_location
     )
+
+    if (!locationData) {
+        return null
+    }
 
     return {
         ...locationData,
@@ -51,12 +55,16 @@ export function usePersonLocation(recordId: string): PersonLocation {
  * Custom React hook to fetch and format company location data.
  *
  * This hook retrieves location information for a company record from the Attio GraphQL API
- * and returns it in a consistent, easy-to-use format with sensible defaults for missing data.
+ * and returns it in a consistent, easy-to-use format.
  */
-export function useCompanyLocation(recordId: string): CompanyLocation {
+export function useCompanyLocation(recordId: string): CompanyLocation | null {
     const {company} = useQuery(getCompanyLocationById, {recordId})
 
     const locationData = extractLocationData(company?.primary_location)
+
+    if (!locationData) {
+        return null
+    }
 
     return {
         ...locationData,
@@ -65,21 +73,49 @@ export function useCompanyLocation(recordId: string): CompanyLocation {
 }
 
 /**
+ * Result type for useRecordLocation hook
+ */
+export interface RecordLocationResult {
+    latitude: number | null
+    longitude: number | null
+    locality: string | null
+    country: string | null
+    hasValidLocation: boolean
+    location: string | null
+}
+
+/**
  * Custom React hook to fetch location data for any record type (person or company).
  *
  * This hook automatically selects the appropriate location data based on the object type
- * and returns it in a consistent format.
+ * and returns it in a consistent format with validation and formatted location string.
  *
  * Note: Both hooks are called to comply with React's Rules of Hooks, but the GraphQL
  * layer should cache and optimize these graphql.
  */
-export function useRecordLocation(object: string, recordId: string): LocationData {
+export function useRecordLocation(object: string, recordId: string): RecordLocationResult {
     // Both hooks must be called unconditionally (Rules of Hooks)
     const personLocation = usePersonLocation(recordId)
     const companyLocation = useCompanyLocation(recordId)
 
     const isPeopleInformation = object === "people"
 
-    // Return the appropriate location data based on object type
-    return isPeopleInformation ? personLocation : companyLocation
+    // Get the appropriate location data based on object type
+    const locationData = isPeopleInformation ? personLocation : companyLocation
+
+    const hasValidLocation = Boolean(locationData?.latitude && locationData?.longitude)
+    const location = locationData
+        ? formatLocationString(locationData.locality, locationData.country)
+        : null
+
+    return {
+        ...(locationData ?? {
+            latitude: null,
+            longitude: null,
+            locality: null,
+            country: null,
+        }),
+        hasValidLocation,
+        location,
+    }
 }

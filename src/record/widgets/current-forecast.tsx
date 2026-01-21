@@ -45,15 +45,19 @@ function NoDataWidget() {
 }
 
 function WeatherWidget({id, object}: WeatherWidgetProps) {
-    const {latitude, longitude, locality, country} = useRecordLocation(object, id)
+    const {latitude, longitude, hasValidLocation, location} = useRecordLocation(object, id)
 
     const {data, isError} = useCurrentForecast(
         {
-            latitude,
-            longitude,
+            latitude: latitude ?? 0,
+            longitude: longitude ?? 0,
         },
-        {enabled: Boolean(latitude && longitude)}
+        {enabled: hasValidLocation}
     )
+
+    if (!hasValidLocation) {
+        return <NoDataWidget />
+    }
 
     if (isError) {
         void showToast({
@@ -71,20 +75,18 @@ function WeatherWidget({id, object}: WeatherWidgetProps) {
         <CurrentForecast
             temperature={data.current.temperature_2m}
             code={data.current.weather_code}
-            locality={locality}
-            country={country}
+            location={location}
         />
     )
 }
 
 interface Props {
     code: number
-    locality: string
-    country: string
+    location: string | null
     temperature: number
 }
 
-function CurrentForecast({code, locality, country, temperature}: Props) {
+function CurrentForecast({code, location, temperature}: Props) {
     const status = WmoCodesMap.get(code)
 
     return (
@@ -93,9 +95,11 @@ function CurrentForecast({code, locality, country, temperature}: Props) {
             <Widget.Text.Primary>
                 {status ? `${status.emoji} ${status.description}` : `No Data`}
             </Widget.Text.Primary>
-            <Widget.Text.Secondary>
-                {locality}, {country}
-            </Widget.Text.Secondary>
+            {location && (
+                <Widget.Text.Secondary>
+                    {location}
+                </Widget.Text.Secondary>
+            )}
             <Widget.Decoration>
                 <TemperatureBadge temperature={temperature} />
             </Widget.Decoration>

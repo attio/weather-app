@@ -65,13 +65,11 @@ function useDailyForecast(
 function ForecastContent({
     latitude,
     longitude,
-    locality,
-    country,
+    location,
 }: {
     latitude: number
     longitude: number
-    locality: string
-    country: string
+    location: string | null
 }) {
     const {scale} = experimental_useWorkspaceSettings()
     const normalizedScale = normalizeTemperatureScale(scale)
@@ -87,8 +85,10 @@ function ForecastContent({
 
     const forecast = data
 
+    const locationTitle = location ? `Location: ${location}` : "Location"
+
     return (
-        <Section title={`Location: ${locality}, ${country}`}>
+        <Section title={locationTitle}>
             <Experimental_Table>
                 <ForecastTableHeader />
                 <Experimental_Table.Body>
@@ -135,10 +135,10 @@ function ForecastContent({
 
 export default function WeatherForecastDialog({object, recordId}: WeatherForecastDialogProps) {
     // Fetch location data using the record location hook
-    const {latitude, longitude, locality, country} = useRecordLocation(object, recordId)
+    const {latitude, longitude, hasValidLocation, location} = useRecordLocation(object, recordId)
 
     // Handle no location data
-    if (!latitude || !longitude) {
+    if (!hasValidLocation || !latitude || !longitude) {
         return (
             <Section title="Weather Forecast">No location data available for this record.</Section>
         )
@@ -150,8 +150,7 @@ export default function WeatherForecastDialog({object, recordId}: WeatherForecas
                 <ForecastContent
                     latitude={latitude}
                     longitude={longitude}
-                    locality={locality}
-                    country={country}
+                    location={location}
                 />
             </Suspense>
         </QueryProvider>
