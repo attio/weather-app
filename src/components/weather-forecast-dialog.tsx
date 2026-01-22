@@ -1,3 +1,5 @@
+import {Suspense} from "react"
+import {format} from "date-fns"
 import {useSuspenseQuery} from "@tanstack/react-query"
 import {
     Divider,
@@ -8,12 +10,10 @@ import {
     Section,
     Typography,
 } from "attio/client"
-import {Suspense} from "react"
 import {useRecordLocation} from "../hooks/use-record-location"
 import getDailyForecast from "../open-weather/get-daily-forecast.server"
 import type {DailyForecastResponse, TemperatureUnit} from "../open-weather/schema"
 import {WmoCodesMap} from "../utils/wmo-codes"
-import {formatDate} from "../utils/date"
 import {QueryProvider} from "../utils/query-client"
 import {TemperatureBadge} from "./temperature-badge"
 
@@ -105,7 +105,7 @@ function ForecastContent({
                         return (
                             <Experimental_Table.Row key={timestamp}>
                                 <Experimental_Table.Cell>
-                                    {formatDate(timestamp)}
+                                    {format(new Date(timestamp * 1000), "EEE, d MMM")}
                                 </Experimental_Table.Cell>
                                 <Experimental_Table.Cell>
                                     {weatherEmoji} {weatherDesc}

@@ -1,10 +1,4 @@
 /**
- * URL Building Utility Module
- *
- * Provides utilities for building URLs with query parameters.
- */
-
-/**
  * Builds a URL with query parameters.
  */
 export function buildUrl(

@@ -1,5 +1,5 @@
 import {Badge, experimental_useWorkspaceSettings} from "attio/client"
-import {getTemperatureBadgeColor} from "../utils/converter"
+import {formatTemperature, getTemperatureBadgeColor} from "../utils/converter"
 import type { TemperatureUnit } from "../open-weather/schema"
 
 interface TemperatureBadgeProps {
@@ -19,7 +19,7 @@ export function TemperatureBadge({temperature}: TemperatureBadgeProps) {
 
     return (
         <Badge color={getTemperatureBadgeColor(temperature, (temperature_unit as TemperatureUnit))}>
-            {`${temperature} °${temperature_unit[0].toUpperCase()}`}
+            {formatTemperature(temperature, temperature_unit as TemperatureUnit)}
         </Badge>
     )
 }

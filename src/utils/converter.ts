@@ -20,3 +20,13 @@ export function getTemperatureBadgeColor(
     if (tempInCelsius <= 35) return "orange"
     return "red"
 }
+
+/**
+ * Formats a temperature value with its unit symbol.
+ * @param temperature - The temperature value
+ * @param unit - The temperature unit (celsius or fahrenheit)
+ * @returns Formatted string like "25 °C" or "77 °F"
+ */
+export function formatTemperature(temperature: number, unit: TemperatureUnit): string {
+    return `${temperature} °${unit[0].toUpperCase()}`
+}
