@@ -63,19 +63,20 @@ export const DailyUnitsSchema = z.object({
 })
 
 export const DailyForecastSchema = z.object({
-    time: z.array(z.number()).describe("Array of unix timestamps"),
-    weather_code: z.array(z.number()).describe("WMO Weather interpretation codes"),
-    precipitation_sum: z.array(z.number()).describe("Total precipitation sum in mm"),
-    precipitation_probability_max: z
-        .array(z.number())
-        .describe("Maximum precipitation probability in %"),
-    temperature_2m_max: z
-        .array(z.number())
-        .describe("Maximum daily temperature at 2m in temperature_unit"),
-    temperature_2m_min: z
-        .array(z.number())
-        .describe("Minimum daily temperature at 2m in temperature_unit"),
-    wind_speed_10m_max: z.array(z.number()).describe("Maximum wind speed at 10m"),
+    /** Array of unix timestamps */
+    time: z.array(z.number()),
+    /** WMO Weather interpretation codes */
+    weather_code: z.array(z.number()),
+    /** Total precipitation sum in mm */
+    precipitation_sum: z.array(z.number()),
+    /** Maximum precipitation probability in % */
+    precipitation_probability_max: z.array(z.number()),
+    /** Maximum daily temperature at 2m in temperature_unit */
+    temperature_2m_max: z.array(z.number()),
+    /** Minimum daily temperature at 2m in temperature_unit */
+    temperature_2m_min: z.array(z.number()),
+    /** Maximum wind speed at 10m */
+    wind_speed_10m_max: z.array(z.number()),
 })
 
 export const DailyForecastResponseSchema = z.object({
