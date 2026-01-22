@@ -19,19 +19,19 @@ function useCurrentForecast(
     {latitude, longitude}: {latitude: number; longitude: number},
     {enabled = true}
 ) {
-    const {scale} = experimental_useWorkspaceSettings()
-    const normalizedScale = normalizeTemperatureScale(scale)
+    const {temperatureUnit} = experimental_useWorkspaceSettings()
+    const temperature_unit = normalizeTemperatureScale(temperatureUnit)
 
     return useSuspenseQuery<CurrentForecastResponse | null>({
         queryFn: () =>
             enabled
                 ? getWeatherForecast({
-                      latitude: Number(latitude),
-                      longitude: Number(longitude),
-                      temperature_unit: normalizedScale,
+                      latitude,
+                      longitude,
+                      temperature_unit,
                   })
                 : null,
-        queryKey: ["current-weather", latitude, longitude, normalizedScale],
+        queryKey: ["current-weather", latitude, longitude, temperature_unit],
     })
 }
 

@@ -2,7 +2,8 @@
 
 A demonstration app built with the Attio App SDK to showcase best practices and capabilities.
 
->[!NOTE] This is a dummy app designed to demonstrate how to build apps using the Attio SDK and follow best practices.
+>[!NOTE]
+>This is an example app designed to demonstrate how to build apps using the Attio SDK and follow best practices.
 
 ## Overview
 

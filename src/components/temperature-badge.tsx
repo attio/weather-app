@@ -7,15 +7,15 @@ interface TemperatureBadgeProps {
 
 /**
  * Displays a temperature badge with appropriate color coding based on the temperature value.
- * Automatically uses the workspace temperature scale setting (celsius or fahrenheit).
+ * Automatically uses the workspace temperature temperatureUnit setting (celsius or fahrenheit).
  */
 export function TemperatureBadge({temperature}: TemperatureBadgeProps) {
-    const {scale} = experimental_useWorkspaceSettings()
-    const normalizedScale = normalizeTemperatureScale(scale)
+    const {temperatureUnit} = experimental_useWorkspaceSettings()
+    const scale = normalizeTemperatureScale(temperatureUnit)
 
     return (
-        <Badge color={getTemperatureBadgeColor(temperature, normalizedScale)}>
-            {`${temperature} °${normalizedScale[0].toUpperCase()}`}
+        <Badge color={getTemperatureBadgeColor(temperature, scale)}>
+            {`${temperature} °${scale[0].toUpperCase()}`}
         </Badge>
     )
 }

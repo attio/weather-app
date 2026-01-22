@@ -53,12 +53,12 @@ interface WeatherForecastDialogProps {
 }
 
 function useDailyForecast(
-    {latitude, longitude, unit}: {latitude: number; longitude: number; unit: TemperatureUnit},
+    {latitude, longitude, temperature_unit}: {latitude: number; longitude: number; temperature_unit: TemperatureUnit},
     {enabled = true}
 ) {
     return useSuspenseQuery<DailyForecastResponse | null>({
-        queryFn: () => (enabled ? getDailyForecast(latitude, longitude, unit) : null),
-        queryKey: ["daily-weather-forecast", latitude, longitude, unit],
+        queryFn: () => (enabled ? getDailyForecast(latitude, longitude, temperature_unit) : null),
+        queryKey: ["daily-weather-forecast", latitude, longitude, temperature_unit],
     })
 }
 
@@ -71,11 +71,11 @@ function ForecastContent({
     longitude: number
     location: string | null
 }) {
-    const {scale} = experimental_useWorkspaceSettings()
-    const normalizedScale = normalizeTemperatureScale(scale)
+    const {temperatureUnit} = experimental_useWorkspaceSettings()
+    const temperature_unit = normalizeTemperatureScale(temperatureUnit)
 
     const {data} = useDailyForecast(
-        {latitude, longitude, unit: normalizedScale},
+        {latitude, longitude, temperature_unit},
         {enabled: Boolean(latitude && longitude)}
     )
 

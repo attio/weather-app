@@ -27,6 +27,7 @@ export const app: App = {
             textActions: [],
         },
     },
+     /** @see https://docs.attio.com/sdk/entry-points/workspace-settings */
     settings: {
         workspace: workspaceSettings,
     },

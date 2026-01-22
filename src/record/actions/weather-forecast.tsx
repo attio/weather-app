@@ -8,7 +8,6 @@
  * 2. **Fetches weather forecast** from Open-Meteo API via server function
  * 3. **Displays 7-day forecast** with temperature, precipitation, and wind speed
  *
- * ## Architecture Overview
  * @see https://docs.attio.com/sdk/entry-points/record-action - Record Actions documentation
  *
  * ### Dialogs

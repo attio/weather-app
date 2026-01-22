@@ -5,17 +5,21 @@ import {z} from "zod"
  *
  * Zod validation open-weather for weather forecast API requests and responses.
  * These open-weather ensure type safety and runtime validation for weather data.
+ * 
+ * @see https://open-meteo.com/en/docs#api_documentation
  */
 
 /**
  * Temperature unit type - either Celsius or Fahrenheit
  */
-export type TemperatureUnit = "celsius" | "fahrenheit"
+export const TemperatureUnitSchema = z.enum(["celsius", "fahrenheit"])
+
+export type TemperatureUnit = z.infer<typeof TemperatureUnitSchema>
 
 export const ForecastPropsSchema = z.object({
     latitude: z.number(),
     longitude: z.number(),
-    temperature_unit: z.enum(["celsius", "fahrenheit"]),
+    temperature_unit: TemperatureUnitSchema,
 })
 
 export const CurrentUnitsSchema = z.object({

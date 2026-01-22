@@ -2,7 +2,7 @@ import {QueryClient, QueryClientProvider} from "@tanstack/react-query"
 import type {PropsWithChildren} from "react"
 
 /**
- * Shared QueryClient instance for all weather-related graphql.
+ * Shared QueryClient instance for all weather-related requests.
  * This ensures cache sharing across different components (dialogs, widgets, etc.)
  */
 const queryClient = new QueryClient({
