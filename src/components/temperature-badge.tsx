@@ -1,5 +1,6 @@
 import {Badge, experimental_useWorkspaceSettings} from "attio/client"
-import {getTemperatureBadgeColor, normalizeTemperatureScale} from "../utils/converter"
+import {getTemperatureBadgeColor} from "../utils/converter"
+import { TemperatureUnit } from "../open-weather/schema"
 
 interface TemperatureBadgeProps {
     temperature: number
@@ -7,15 +8,18 @@ interface TemperatureBadgeProps {
 
 /**
  * Displays a temperature badge with appropriate color coding based on the temperature value.
- * Automatically uses the workspace temperature temperatureUnit setting (celsius or fahrenheit).
+ * Automatically uses the workspace temperature temperature_unit setting (celsius or fahrenheit).
  */
 export function TemperatureBadge({temperature}: TemperatureBadgeProps) {
-    const {temperatureUnit} = experimental_useWorkspaceSettings()
-    const scale = normalizeTemperatureScale(temperatureUnit)
+    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
+
+    if (!temperature_unit) {
+        return null
+    }
 
     return (
-        <Badge color={getTemperatureBadgeColor(temperature, scale)}>
-            {`${temperature} °${scale[0].toUpperCase()}`}
+        <Badge color={getTemperatureBadgeColor(temperature, (temperature_unit as TemperatureUnit))}>
+            {`${temperature} °${temperature_unit[0].toUpperCase()}`}
         </Badge>
     )
 }

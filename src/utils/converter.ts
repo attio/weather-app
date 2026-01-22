@@ -2,14 +2,6 @@ import type {Badge} from "attio/client"
 import type React from "react"
 import type {TemperatureUnit} from "../open-weather/schema"
 
-/**
- * Normalizes temperature scale to ensure a valid value.
- * Defaults to "fahrenheit" if the scale is not "celsius".
- */
-export function normalizeTemperatureScale(scale: string | null | unknown): TemperatureUnit {
-    return scale === "celsius" ? "celsius" : "fahrenheit"
-}
-
 export function getTemperatureBadgeColor(
     temperature: number,
     unit: TemperatureUnit

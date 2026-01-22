@@ -13,7 +13,6 @@ import {useRecordLocation} from "../hooks/use-record-location"
 import getDailyForecast from "../open-weather/get-daily-forecast.server"
 import type {DailyForecastResponse, TemperatureUnit} from "../open-weather/schema"
 import {WmoCodesMap} from "../utils/wmo-codes"
-import {normalizeTemperatureScale} from "../utils/converter"
 import {formatDate} from "../utils/date"
 import {QueryProvider} from "../utils/query-client"
 import {TemperatureBadge} from "./temperature-badge"
@@ -71,11 +70,10 @@ function ForecastContent({
     longitude: number
     location: string | null
 }) {
-    const {temperatureUnit} = experimental_useWorkspaceSettings()
-    const temperature_unit = normalizeTemperatureScale(temperatureUnit)
+    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
 
     const {data} = useDailyForecast(
-        {latitude, longitude, temperature_unit},
+        {latitude, longitude, temperature_unit: (temperature_unit as TemperatureUnit)},
         {enabled: Boolean(latitude && longitude)}
     )
 

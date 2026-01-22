@@ -4,9 +4,8 @@ import {experimental_useWorkspaceSettings, showToast, Widget} from "attio/client
 import {Suspense} from "react"
 import {TemperatureBadge} from "../../components/temperature-badge"
 import {useRecordLocation} from "../../hooks/use-record-location"
-import type {CurrentForecastResponse} from "../../open-weather/schema"
+import type {CurrentForecastResponse, TemperatureUnit} from "../../open-weather/schema"
 import getWeatherForecast from "../../open-weather/get-weather-forecast.server"
-import {normalizeTemperatureScale} from "../../utils/converter"
 import {QueryProvider} from "../../utils/query-client"
 import {WmoCodesMap} from "../../utils/wmo-codes"
 
@@ -19,8 +18,7 @@ function useCurrentForecast(
     {latitude, longitude}: {latitude: number; longitude: number},
     {enabled = true}
 ) {
-    const {temperatureUnit} = experimental_useWorkspaceSettings()
-    const temperature_unit = normalizeTemperatureScale(temperatureUnit)
+    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
 
     return useSuspenseQuery<CurrentForecastResponse | null>({
         queryFn: () =>
@@ -28,7 +26,7 @@ function useCurrentForecast(
                 ? getWeatherForecast({
                       latitude,
                       longitude,
-                      temperature_unit,
+                      temperature_unit: (temperature_unit as TemperatureUnit),
                   })
                 : null,
         queryKey: ["current-weather", latitude, longitude, temperature_unit],
@@ -46,7 +44,6 @@ function NoDataWidget() {
 
 function WeatherWidget({id, object}: WeatherWidgetProps) {
     const {latitude, longitude, hasValidLocation, location} = useRecordLocation(object, id)
-
     const {data, isError} = useCurrentForecast(
         {
             latitude: latitude ?? 0,
