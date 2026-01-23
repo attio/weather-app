@@ -57,7 +57,7 @@ function ForecastContent({
 }: {
     latitude: number
     longitude: number
-    location: string | null
+    location: string
 }) {
     const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
 
@@ -72,7 +72,7 @@ function ForecastContent({
 
     const forecast = data
 
-    const locationTitle = location ? `Location: ${location}` : "Location"
+    const locationTitle = `Location: ${location}`
 
     return (
         <Section title={locationTitle}>
@@ -121,11 +121,9 @@ function ForecastContent({
 }
 
 export default function WeatherForecastDialog({object, recordId}: WeatherForecastDialogProps) {
-    // Fetch location data using the record location hook
-    const {latitude, longitude, hasValidLocation, location} = useRecordLocation(object, recordId)
+    const recordLocation = useRecordLocation(object, recordId)
 
-    // Handle no location data
-    if (!hasValidLocation || !latitude || !longitude) {
+    if (!recordLocation) {
         return (
             <Section title="Weather Forecast">No location data available for this record.</Section>
         )
@@ -134,7 +132,11 @@ export default function WeatherForecastDialog({object, recordId}: WeatherForecas
     return (
         <QueryProvider>
             <Suspense fallback={<LoadingState />}>
-                <ForecastContent latitude={latitude} longitude={longitude} location={location} />
+                <ForecastContent
+                    latitude={recordLocation.latitude}
+                    longitude={recordLocation.longitude}
+                    location={recordLocation.location}
+                />
             </Suspense>
         </QueryProvider>
     )

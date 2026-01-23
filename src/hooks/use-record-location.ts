@@ -75,25 +75,22 @@ export function useCompanyLocation(recordId: string): CompanyLocation | null {
 /**
  * Result type for useRecordLocation hook
  */
-export interface RecordLocationResult {
-    latitude: number | null
-    longitude: number | null
-    locality: string | null
-    country: string | null
-    hasValidLocation: boolean
-    location: string | null
+export interface RecordLocation extends LocationData {
+    /** Formatted location string (locality, country) or coordinates as fallback */
+    location: string
 }
 
 /**
  * Custom React hook to fetch location data for any record type (person or company).
  *
  * This hook automatically selects the appropriate location data based on the object type
- * and returns it in a consistent format with validation and formatted location string.
+ * and returns it in a consistent format with a formatted location string.
+ * Returns null if the record has no valid location data.
  *
  * Note: Both hooks are called to comply with React's Rules of Hooks, but the GraphQL
- * layer should cache and optimize these graphql.
+ * layer should cache and optimize these queries.
  */
-export function useRecordLocation(object: string, recordId: string): RecordLocationResult {
+export function useRecordLocation(object: string, recordId: string): RecordLocation | null {
     // Both hooks must be called unconditionally (Rules of Hooks)
     const personLocation = usePersonLocation(recordId)
     const companyLocation = useCompanyLocation(recordId)
@@ -103,22 +100,16 @@ export function useRecordLocation(object: string, recordId: string): RecordLocat
     // Get the appropriate location data based on object type
     const locationData = isPeopleInformation ? personLocation : companyLocation
 
-    const hasValidLocation = Boolean(locationData?.latitude && locationData?.longitude)
-    const formattedLocation = locationData
-        ? formatLocationString(locationData.locality, locationData.country)
-        : null
-    // Fallback to coordinates if we have valid lat/lng but no locality/country
-    const location = formattedLocation
-        ?? (hasValidLocation ? `${locationData?.latitude}, ${locationData?.longitude}` : null)
+    if (!locationData) {
+        return null
+    }
+
+    // Format location string with fallback to coordinates
+    const formattedLocation = formatLocationString(locationData.locality, locationData.country)
+    const location = formattedLocation ?? `${locationData.latitude}, ${locationData.longitude}`
 
     return {
-        ...(locationData ?? {
-            latitude: null,
-            longitude: null,
-            locality: null,
-            country: null,
-        }),
-        hasValidLocation,
+        ...locationData,
         location,
     }
 }

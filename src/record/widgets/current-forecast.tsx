@@ -34,16 +34,16 @@ function NoForecastWidget() {
 }
 
 function WeatherWidget({id, object}: WeatherWidgetProps) {
-    const {latitude, longitude, hasValidLocation, location} = useRecordLocation(object, id)
+    const recordLocation = useRecordLocation(object, id)
     const {data, isError} = useCurrentForecast(
         {
-            latitude: latitude ?? 0,
-            longitude: longitude ?? 0,
+            latitude: recordLocation?.latitude ?? 0,
+            longitude: recordLocation?.longitude ?? 0,
         },
-        {enabled: hasValidLocation}
+        {enabled: recordLocation !== null}
     )
 
-    if (!hasValidLocation) {
+    if (!recordLocation) {
         return <NoLocationWidget />
     }
 
@@ -63,7 +63,7 @@ function WeatherWidget({id, object}: WeatherWidgetProps) {
         <CurrentForecast
             temperature={data.current.temperature_2m}
             code={data.current.weather_code}
-            location={location ?? ""}
+            location={recordLocation.location}
         />
     )
 }
