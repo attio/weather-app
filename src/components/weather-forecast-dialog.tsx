@@ -1,6 +1,4 @@
 import {Suspense} from "react"
-import {format} from "date-fns"
-import {useSuspenseQuery} from "@tanstack/react-query"
 import {
     Divider,
     Experimental_Table,
@@ -10,11 +8,13 @@ import {
     Section,
     Typography,
 } from "attio/client"
+import {useSuspenseQuery} from "@tanstack/react-query"
+import {format} from "date-fns"
 import {useRecordLocation} from "../hooks/use-record-location"
 import getDailyForecast from "../open-weather/get-daily-forecast.server"
 import type {DailyForecastResponse, TemperatureUnit} from "../open-weather/schema"
-import {WmoCodesMap} from "../utils/wmo-codes"
 import {QueryProvider} from "../utils/query-client"
+import {WmoCodesMap} from "../utils/wmo-codes"
 import {TemperatureBadge} from "./temperature-badge"
 
 /**
@@ -52,7 +52,11 @@ interface WeatherForecastDialogProps {
 }
 
 function useDailyForecast(
-    {latitude, longitude, temperature_unit}: {latitude: number; longitude: number; temperature_unit: TemperatureUnit},
+    {
+        latitude,
+        longitude,
+        temperature_unit,
+    }: {latitude: number; longitude: number; temperature_unit: TemperatureUnit},
     {enabled = true}
 ) {
     return useSuspenseQuery<DailyForecastResponse | null>({
@@ -73,7 +77,7 @@ function ForecastContent({
     const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
 
     const {data} = useDailyForecast(
-        {latitude, longitude, temperature_unit: (temperature_unit as TemperatureUnit)},
+        {latitude, longitude, temperature_unit: temperature_unit as TemperatureUnit},
         {enabled: Boolean(latitude && longitude)}
     )
 
@@ -145,11 +149,7 @@ export default function WeatherForecastDialog({object, recordId}: WeatherForecas
     return (
         <QueryProvider>
             <Suspense fallback={<LoadingState />}>
-                <ForecastContent
-                    latitude={latitude}
-                    longitude={longitude}
-                    location={location}
-                />
+                <ForecastContent latitude={latitude} longitude={longitude} location={location} />
             </Suspense>
         </QueryProvider>
     )

@@ -1,7 +1,7 @@
 /**
  * WMO Weather interpretation codes.
  * This map is used to convert WMO weather interpretation codes to human-readable descriptions and emojis.
- * 
+ *
  * @see https://open-meteo.com/en/docs#weather_variable_documentation
  */
 export const WmoCodesMap = new Map<number, {description: string; emoji: string}>([

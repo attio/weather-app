@@ -1,5 +1,5 @@
-import type {Badge} from "attio/client"
 import type React from "react"
+import type {Badge} from "attio/client"
 import type {TemperatureUnit} from "../open-weather/schema"
 
 export function getTemperatureBadgeColor(

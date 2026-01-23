@@ -1,11 +1,11 @@
-import {useSuspenseQuery} from "@tanstack/react-query"
+import {Suspense} from "react"
 import type {App} from "attio"
 import {experimental_useWorkspaceSettings, showToast, Widget} from "attio/client"
-import {Suspense} from "react"
+import {useSuspenseQuery} from "@tanstack/react-query"
 import {TemperatureBadge} from "../../components/temperature-badge"
 import {useRecordLocation} from "../../hooks/use-record-location"
-import type {CurrentForecastResponse, TemperatureUnit} from "../../open-weather/schema"
 import getWeatherForecast from "../../open-weather/get-weather-forecast.server"
+import type {CurrentForecastResponse, TemperatureUnit} from "../../open-weather/schema"
 import {QueryProvider} from "../../utils/query-client"
 import {WmoCodesMap} from "../../utils/wmo-codes"
 
@@ -26,7 +26,7 @@ function useCurrentForecast(
                 ? getWeatherForecast({
                       latitude,
                       longitude,
-                      temperature_unit: (temperature_unit as TemperatureUnit),
+                      temperature_unit: temperature_unit as TemperatureUnit,
                   })
                 : null,
         queryKey: ["current-weather", latitude, longitude, temperature_unit],
@@ -92,11 +92,7 @@ function CurrentForecast({code, location, temperature}: Props) {
             <Widget.Text.Primary>
                 {status ? `${status.emoji} ${status.description}` : `No Data`}
             </Widget.Text.Primary>
-            {location && (
-                <Widget.Text.Secondary>
-                    {location}
-                </Widget.Text.Secondary>
-            )}
+            {location && <Widget.Text.Secondary>{location}</Widget.Text.Secondary>}
             <Widget.Decoration>
                 <TemperatureBadge temperature={temperature} />
             </Widget.Decoration>

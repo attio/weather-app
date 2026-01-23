@@ -5,7 +5,7 @@ import {z} from "zod"
  *
  * Zod validation open-weather for weather forecast API requests and responses.
  * These open-weather ensure type safety and runtime validation for weather data.
- * 
+ *
  * @see https://open-meteo.com/en/docs#api_documentation
  */
 

@@ -1,14 +1,16 @@
+import {buildUrl} from "../utils/url"
+import {handleApiError} from "./handle-api-error"
 import {
     type DailyForecastResponse,
     DailyForecastResponseSchema,
     type TemperatureUnit,
 } from "./schema"
-import {buildUrl} from "../utils/url"
 
 /**
  * Fetches 7-day weather forecast from Open-Meteo API.
  *
  * @see https://open-meteo.com/en/docs
+ * @see https://open-meteo.com/en/docs#errors
  */
 export default async function getDailyForecast(
     latitude: number,
@@ -42,7 +44,7 @@ export default async function getDailyForecast(
         })
 
         if (!response.ok) {
-            throw new Error(`HTTP error status: ${response.status}`)
+            await handleApiError(response)
         }
 
         const data = await response.json()

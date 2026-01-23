@@ -1,8 +1,7 @@
 import type {App} from "attio"
-
+import {showWeatherForecast} from "./record/actions/weather-forecast"
 import weatherWidget from "./record/widgets/current-forecast"
 import workspaceSettings from "./settings/workspace-settings"
-import {showWeatherForecast} from "./record/actions/weather-forecast"
 import "./app.settings"
 
 export const app: App = {
@@ -28,7 +27,7 @@ export const app: App = {
             textActions: [],
         },
     },
-     /** @see https://docs.attio.com/sdk/entry-points/workspace-settings */
+    /** @see https://docs.attio.com/sdk/entry-points/workspace-settings */
     settings: {
         workspace: workspaceSettings,
     },

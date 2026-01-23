@@ -1,14 +1,16 @@
+import {buildUrl} from "../utils/url"
+import {handleApiError} from "./handle-api-error"
 import {
-    CurrentForecastResponseSchema,
     type CurrentForecastResponse,
+    CurrentForecastResponseSchema,
     type ForecastProps,
 } from "./schema"
-import {buildUrl} from "../utils/url"
 
 /**
  * Fetches current weather forecast from Open-Meteo API.
  *
  * @see https://open-meteo.com/en/docs
+ * @see https://open-meteo.com/en/docs#errors
  */
 export default async function getWeatherForecast({
     latitude,
@@ -35,7 +37,7 @@ export default async function getWeatherForecast({
         })
 
         if (!response.ok) {
-            throw new Error(`HTTP error status: ${response.status}`)
+            await handleApiError(response)
         }
 
         const data = await response.json()
