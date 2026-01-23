@@ -16,33 +16,34 @@ interface RawLocation {
  * Extracts and formats location data from a raw location object.
  *
  * Converts string coordinates to numbers and ensures consistent typing across all location-related hooks.
- * Returns null if neither location has latitude/longitude data.
+ * Uses the primary location if it has valid coordinates, otherwise falls back to the fallback location.
+ * Returns null if neither location has valid latitude/longitude data.
  */
 export function extractLocationData(
     primaryLocation?: RawLocation | null,
     fallbackLocation?: RawLocation | null
 ): LocationData | null {
-    // Use primary location, falling back to fallback location if needed
-    const latitudeValue = primaryLocation?.latitude ?? fallbackLocation?.latitude
-    const longitudeValue = primaryLocation?.longitude ?? fallbackLocation?.longitude
-    const localityValue = primaryLocation?.locality ?? fallbackLocation?.locality
-    const countryValue = primaryLocation?.country ?? fallbackLocation?.country
+    // Determine which location to use - treat each location as a whole unit
+    const hasValidPrimary =
+        primaryLocation?.latitude != null && primaryLocation?.longitude != null
+    const hasValidFallback =
+        fallbackLocation?.latitude != null && fallbackLocation?.longitude != null
 
-    // If neither location has latitude/longitude, don't use defaults
-    if (latitudeValue == null || longitudeValue == null) {
+    const location = hasValidPrimary
+        ? primaryLocation
+        : hasValidFallback
+          ? fallbackLocation
+          : null
+
+    if (!location) {
         return null
     }
 
-    const latitude = Number(latitudeValue)
-    const longitude = Number(longitudeValue)
-    const locality = localityValue != null ? String(localityValue) : null
-    const country = countryValue != null ? String(countryValue) : null
-
     return {
-        latitude,
-        longitude,
-        locality,
-        country,
+        latitude: Number(location.latitude),
+        longitude: Number(location.longitude),
+        locality: location.locality != null ? location.locality : null,
+        country: location.country != null ? location.country : null,
     }
 }
 
