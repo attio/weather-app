@@ -9,7 +9,7 @@ function Page() {
         <Form>
             <Section title="General">
                 <Experimental_Fieldset legend="Temperature Scale">
-                    <Experimental_RadioGroup name="temperature_unit">
+                    <Experimental_RadioGroup name={"temperature_unit" as "temperature_unit"}>
                         <Experimental_RadioGroup.Item value="celsius" label="Celsius" />
                         <Experimental_RadioGroup.Item value="fahrenheit" label="Fahrenheit" />
                     </Experimental_RadioGroup>

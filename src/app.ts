@@ -3,6 +3,7 @@ import type {App} from "attio"
 import weatherWidget from "./record/widgets/current-forecast"
 import workspaceSettings from "./settings/workspace-settings"
 import {showWeatherForecast} from "./record/actions/weather-forecast"
+import "./app.settings"
 
 export const app: App = {
     record: {
