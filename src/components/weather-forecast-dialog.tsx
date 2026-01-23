@@ -61,10 +61,11 @@ function ForecastContent({
 }) {
     const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
 
-    const {data} = useDailyForecast(
-        {latitude, longitude, temperature_unit: temperature_unit as TemperatureUnit},
-        {enabled: Boolean(latitude && longitude)}
-    )
+    const {data} = useDailyForecast({
+        latitude,
+        longitude,
+        temperature_unit: temperature_unit as TemperatureUnit,
+    })
 
     if (!data) {
         return <Section title="Weather Forecast">No forecast data available.</Section>

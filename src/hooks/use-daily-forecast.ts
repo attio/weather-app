@@ -8,19 +8,16 @@ interface UseDailyForecastParams {
     temperature_unit: TemperatureUnit
 }
 
-interface UseDailyForecastOptions {
-    enabled?: boolean
-}
-
 /**
  * Hook to fetch 7-day weather forecast data.
  */
-export function useDailyForecast(
-    {latitude, longitude, temperature_unit}: UseDailyForecastParams,
-    {enabled = true}: UseDailyForecastOptions = {}
-) {
-    return useSuspenseQuery<DailyForecastResponse | null>({
-        queryFn: () => (enabled ? getDailyForecast(latitude, longitude, temperature_unit) : null),
+export function useDailyForecast({
+    latitude,
+    longitude,
+    temperature_unit,
+}: UseDailyForecastParams) {
+    return useSuspenseQuery<DailyForecastResponse>({
+        queryFn: () => getDailyForecast(latitude, longitude, temperature_unit),
         queryKey: ["daily-weather-forecast", latitude, longitude, temperature_unit],
     })
 }

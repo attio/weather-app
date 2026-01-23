@@ -35,10 +35,6 @@ function formatTemperature(temperature: number, unit: TemperatureUnit): string {
 export function TemperatureBadge({temperature}: TemperatureBadgeProps) {
     const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
 
-    if (!temperature_unit) {
-        return null
-    }
-
     return (
         <Badge color={getTemperatureBadgeColor(temperature, temperature_unit as TemperatureUnit)}>
             {formatTemperature(temperature, temperature_unit as TemperatureUnit)}
