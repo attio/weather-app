@@ -8,11 +8,10 @@ import {
     Section,
     Typography,
 } from "attio/client"
-import {useSuspenseQuery} from "@tanstack/react-query"
 import {format} from "date-fns"
+import {useDailyForecast} from "../hooks/use-daily-forecast"
 import {useRecordLocation} from "../hooks/use-record-location"
-import getDailyForecast from "../open-weather/get-daily-forecast.server"
-import type {DailyForecastResponse, TemperatureUnit} from "../open-weather/schema"
+import type {TemperatureUnit} from "../open-weather/schema"
 import {QueryProvider} from "../utils/query-client"
 import {WmoCodesMap} from "../utils/wmo-codes"
 import {TemperatureBadge} from "./temperature-badge"
@@ -49,20 +48,6 @@ function ForecastFooter() {
 interface WeatherForecastDialogProps {
     object: string
     recordId: string
-}
-
-function useDailyForecast(
-    {
-        latitude,
-        longitude,
-        temperature_unit,
-    }: {latitude: number; longitude: number; temperature_unit: TemperatureUnit},
-    {enabled = true}
-) {
-    return useSuspenseQuery<DailyForecastResponse | null>({
-        queryFn: () => (enabled ? getDailyForecast(latitude, longitude, temperature_unit) : null),
-        queryKey: ["daily-weather-forecast", latitude, longitude, temperature_unit],
-    })
 }
 
 function ForecastContent({

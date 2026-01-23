@@ -104,9 +104,12 @@ export function useRecordLocation(object: string, recordId: string): RecordLocat
     const locationData = isPeopleInformation ? personLocation : companyLocation
 
     const hasValidLocation = Boolean(locationData?.latitude && locationData?.longitude)
-    const location = locationData
+    const formattedLocation = locationData
         ? formatLocationString(locationData.locality, locationData.country)
         : null
+    // Fallback to coordinates if we have valid lat/lng but no locality/country
+    const location = formattedLocation
+        ?? (hasValidLocation ? `${locationData?.latitude}, ${locationData?.longitude}` : null)
 
     return {
         ...(locationData ?? {

@@ -1,11 +1,9 @@
 import {Suspense} from "react"
 import type {App} from "attio"
-import {experimental_useWorkspaceSettings, showToast, Widget} from "attio/client"
-import {useSuspenseQuery} from "@tanstack/react-query"
+import {showToast, Widget} from "attio/client"
 import {TemperatureBadge} from "../../components/temperature-badge"
+import {useCurrentForecast} from "../../hooks/use-current-forecast"
 import {useRecordLocation} from "../../hooks/use-record-location"
-import getWeatherForecast from "../../open-weather/get-weather-forecast.server"
-import type {CurrentForecastResponse, TemperatureUnit} from "../../open-weather/schema"
 import {QueryProvider} from "../../utils/query-client"
 import {WmoCodesMap} from "../../utils/wmo-codes"
 
@@ -14,26 +12,19 @@ interface WeatherWidgetProps {
     object: string
 }
 
-function useCurrentForecast(
-    {latitude, longitude}: {latitude: number; longitude: number},
-    {enabled = true}
-) {
-    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
-
-    return useSuspenseQuery<CurrentForecastResponse | null>({
-        queryFn: () =>
-            enabled
-                ? getWeatherForecast({
-                      latitude,
-                      longitude,
-                      temperature_unit: temperature_unit as TemperatureUnit,
-                  })
-                : null,
-        queryKey: ["current-weather", latitude, longitude, temperature_unit],
-    })
+function NoLocationWidget() {
+    return (
+        <Widget.TextWidget>
+            <Widget.Title>Weather forecast</Widget.Title>
+            <Widget.Text.Primary>No location</Widget.Text.Primary>
+            <Widget.Text.Secondary>
+                Add a location to this record to see the forecast
+            </Widget.Text.Secondary>
+        </Widget.TextWidget>
+    )
 }
 
-function NoDataWidget() {
+function NoForecastWidget() {
     return (
         <Widget.TextWidget>
             <Widget.Title>Weather forecast</Widget.Title>
@@ -53,11 +44,11 @@ function WeatherWidget({id, object}: WeatherWidgetProps) {
     )
 
     if (!hasValidLocation) {
-        return <NoDataWidget />
+        return <NoLocationWidget />
     }
 
     if (isError) {
-        void showToast({
+        showToast({
             variant: "error",
             title: "Current forecast",
             text: "No information available to show on the widget",
@@ -65,21 +56,21 @@ function WeatherWidget({id, object}: WeatherWidgetProps) {
     }
 
     if (!data) {
-        return <NoDataWidget />
+        return <NoForecastWidget />
     }
 
     return (
         <CurrentForecast
             temperature={data.current.temperature_2m}
             code={data.current.weather_code}
-            location={location}
+            location={location ?? ""}
         />
     )
 }
 
 interface Props {
     code: number
-    location: string | null
+    location: string
     temperature: number
 }
 
@@ -92,7 +83,7 @@ function CurrentForecast({code, location, temperature}: Props) {
             <Widget.Text.Primary>
                 {status ? `${status.emoji} ${status.description}` : `No Data`}
             </Widget.Text.Primary>
-            {location && <Widget.Text.Secondary>{location}</Widget.Text.Secondary>}
+            <Widget.Text.Secondary>{location}</Widget.Text.Secondary>
             <Widget.Decoration>
                 <TemperatureBadge temperature={temperature} />
             </Widget.Decoration>
