@@ -11,6 +11,7 @@
     "format-fix": "npx biome format --write .",
     "clean": "rm -rf lib && rm -rf dist",
     "lint": "npx biome lint .",
+    "type-check": "tsc --noEmit",
     "test": ""
   },
   "devDependencies": {
@@ -22,7 +23,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.17",
-    "attio": "0.0.1-experimental.20260128",
+    "attio": "0.0.1-experimental.20260128.1",
     "date-fns": "^4.1.0",
     "react": "19.1.0",
     "zod": "^4.0.14"
