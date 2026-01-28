@@ -1,4 +1,4 @@
-import {Badge, experimental_useWorkspaceSettings} from "attio/client"
+import {Badge, useWorkspaceSettings} from "attio/client"
 import type {TemperatureUnit} from "../open-weather/schema"
 
 interface TemperatureBadgeProps {
@@ -33,7 +33,7 @@ function formatTemperature(temperature: number, unit: TemperatureUnit): string {
  * Automatically uses the workspace temperature temperature_unit setting (celsius or fahrenheit).
  */
 export function TemperatureBadge({temperature}: TemperatureBadgeProps) {
-    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
+    const {temperature_unit = "fahrenheit"} = useWorkspaceSettings()
 
     return (
         <Badge color={getTemperatureBadgeColor(temperature, temperature_unit as TemperatureUnit)}>

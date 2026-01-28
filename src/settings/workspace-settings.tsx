@@ -1,15 +1,15 @@
 import type {App} from "attio"
-import {experimental_useWorkspaceSettingsForm} from "attio/client"
+import {useWorkspaceSettingsForm} from "attio/client"
 
 function Page() {
     const {Form, Section, Experimental_RadioGroup, Experimental_Fieldset} =
-        experimental_useWorkspaceSettingsForm()
+        useWorkspaceSettingsForm()
 
     return (
         <Form>
             <Section title="General">
                 <Experimental_Fieldset legend="Temperature Scale">
-                    <Experimental_RadioGroup name={"temperature_unit" as "temperature_unit"}>
+                    <Experimental_RadioGroup name="temperature_unit">
                         <Experimental_RadioGroup.Item value="celsius" label="Celsius" />
                         <Experimental_RadioGroup.Item value="fahrenheit" label="Fahrenheit" />
                     </Experimental_RadioGroup>

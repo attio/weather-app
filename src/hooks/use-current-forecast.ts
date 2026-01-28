@@ -1,4 +1,4 @@
-import {experimental_useWorkspaceSettings} from "attio/client"
+import {useWorkspaceSettings} from "attio/client"
 import {useSuspenseQuery} from "@tanstack/react-query"
 import getWeatherForecast from "../open-weather/get-weather-forecast.server"
 import type {CurrentForecastResponse, TemperatureUnit} from "../open-weather/schema"
@@ -20,7 +20,7 @@ export function useCurrentForecast(
     {latitude, longitude}: UseCurrentForecastParams,
     {enabled = true}: UseCurrentForecastOptions = {}
 ) {
-    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
+    const {temperature_unit = "fahrenheit"} = useWorkspaceSettings()
 
     return useSuspenseQuery<CurrentForecastResponse | null>({
         queryFn: () =>

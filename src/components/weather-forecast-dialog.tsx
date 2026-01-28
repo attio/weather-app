@@ -1,8 +1,8 @@
 import {Suspense} from "react"
 import {
     Divider,
-    Experimental_Table,
-    experimental_useWorkspaceSettings,
+    Table,
+    useWorkspaceSettings,
     Link,
     LoadingState,
     Section,
@@ -21,13 +21,13 @@ import {TemperatureBadge} from "./temperature-badge"
  */
 function ForecastTableHeader() {
     return (
-        <Experimental_Table.Header>
-            <Experimental_Table.HeaderCell>Date</Experimental_Table.HeaderCell>
-            <Experimental_Table.HeaderCell>Weather</Experimental_Table.HeaderCell>
-            <Experimental_Table.HeaderCell>Temp. (Max/Min)</Experimental_Table.HeaderCell>
-            <Experimental_Table.HeaderCell>Precipitation</Experimental_Table.HeaderCell>
-            <Experimental_Table.HeaderCell>Wind</Experimental_Table.HeaderCell>
-        </Experimental_Table.Header>
+        <Table.Header>
+            <Table.HeaderCell>Date</Table.HeaderCell>
+            <Table.HeaderCell>Weather</Table.HeaderCell>
+            <Table.HeaderCell>Temp. (Max/Min)</Table.HeaderCell>
+            <Table.HeaderCell>Precipitation</Table.HeaderCell>
+            <Table.HeaderCell>Wind</Table.HeaderCell>
+        </Table.Header>
     )
 }
 
@@ -59,7 +59,7 @@ function ForecastContent({
     longitude: number
     location: string
 }) {
-    const {temperature_unit = "fahrenheit"} = experimental_useWorkspaceSettings()
+    const {temperature_unit = "fahrenheit"} = useWorkspaceSettings()
 
     const {data} = useDailyForecast({
         latitude,
@@ -77,9 +77,9 @@ function ForecastContent({
 
     return (
         <Section title={locationTitle}>
-            <Experimental_Table>
+            <Table>
                 <ForecastTableHeader />
-                <Experimental_Table.Body>
+                <Table.Body>
                     {forecast.daily.time.map((timestamp: number, index: number) => {
                         const weatherCode = forecast.daily.weather_code[index]
                         const tempMax = Math.round(forecast.daily.temperature_2m_max[index])
@@ -93,29 +93,29 @@ function ForecastContent({
                         const weatherDesc = weatherInfo?.description || "Unknown"
 
                         return (
-                            <Experimental_Table.Row key={timestamp}>
-                                <Experimental_Table.Cell>
+                            <Table.Row key={timestamp}>
+                                <Table.Cell>
                                     {format(new Date(timestamp * 1000), "EEE, d MMM")}
-                                </Experimental_Table.Cell>
-                                <Experimental_Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
                                     {weatherEmoji} {weatherDesc}
-                                </Experimental_Table.Cell>
-                                <Experimental_Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
                                     <TemperatureBadge temperature={tempMax} />
                                     <TemperatureBadge temperature={tempMin} />
-                                </Experimental_Table.Cell>
-                                <Experimental_Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
                                     {precipitation.toPrecision(2)}{" "}
                                     {forecast.daily_units.precipitation_sum} ({precipProb}%)
-                                </Experimental_Table.Cell>
-                                <Experimental_Table.Cell>
+                                </Table.Cell>
+                                <Table.Cell>
                                     {windSpeed} {forecast.daily_units.wind_speed_10m_max}
-                                </Experimental_Table.Cell>
-                            </Experimental_Table.Row>
+                                </Table.Cell>
+                            </Table.Row>
                         )
                     })}
-                </Experimental_Table.Body>
-            </Experimental_Table>
+                </Table.Body>
+            </Table>
             <ForecastFooter />
         </Section>
     )
