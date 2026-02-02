@@ -7,11 +7,7 @@
   },
   "files": {
     "ignoreUnknown": false,
-    "includes": [
-      "**",
-      "!**/node_modules/",
-      "!**/dist/"
-    ]
+    "includes": ["**", "!**/node_modules/", "!**/dist/"]
   },
   "formatter": {
     "enabled": true,
@@ -55,7 +51,21 @@
     "actions": {
       "source": {
         "organizeImports": {
-          "level": "on"
+          "level": "on",
+          "options": {
+            "groups": [
+              // React ecosystem first
+              ["react", "react/**", "react-dom", "react-dom/**"],
+              // Attio packages
+              ["attio", "attio/**"],
+              // Other third-party packages
+              ":PACKAGE:",
+              // Aliases and internal imports
+              ":ALIAS:",
+              // Relative imports last
+              ":PATH:"
+            ]
+          }
         }
       }
     }
