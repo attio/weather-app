@@ -23,7 +23,7 @@
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.17",
-    "attio": "0.0.1-experimental.20260128.1",
+    "attio": "^0.0.1-experimental.20260508",
     "date-fns": "^4.1.0",
     "react": "19.1.0",
     "zod": "^4.0.14"
