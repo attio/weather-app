@@ -1,3 +1,4 @@
+import {createLogger} from "../utils/logger"
 import {buildUrl} from "../utils/url"
 import {handleApiError} from "./handle-api-error"
 import {
@@ -5,6 +6,8 @@ import {
     CurrentForecastResponseSchema,
     type ForecastProps,
 } from "./schema"
+
+const logger = createLogger("get-weather-forecast")
 
 /**
  * Fetches current weather forecast from Open-Meteo API.
@@ -18,7 +21,7 @@ export default async function getWeatherForecast({
     temperature_unit = "celsius",
 }: ForecastProps): Promise<CurrentForecastResponse> {
     try {
-        console.log(`[Current Weather] Fetching current forecast for ${latitude}, ${longitude}`)
+        logger.log(`Fetching current forecast for ${latitude}, ${longitude}`)
 
         const url = buildUrl("https://api.open-meteo.com/v1/forecast", {
             latitude,
@@ -43,12 +46,12 @@ export default async function getWeatherForecast({
         const data = await response.json()
         const validatedResponse = CurrentForecastResponseSchema.parse(data)
 
-        console.log(`[Current Weather] Successfully fetched current forecast data`)
+        logger.log(`Successfully fetched current forecast data`)
 
         return validatedResponse
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "Unknown error"
-        console.error(`[Current Weather Error] ${errorMessage}`)
+        logger.error(errorMessage)
         throw new Error(`Failed to fetch current weather forecast: ${errorMessage}`)
     }
 }

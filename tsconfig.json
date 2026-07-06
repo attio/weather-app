@@ -36,7 +36,7 @@
     "strictNullChecks": true,
     "strictPropertyInitialization": true,
     "target": "ES2019",
-    "types": ["attio/client"]
+    "types": ["attio/client", "node"]
   },
-  "exclude": ["node_modules"]
+  "exclude": ["node_modules", "src/__mocks__"]
 }

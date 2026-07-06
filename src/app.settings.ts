@@ -1,6 +1,6 @@
 import {Settings, type SettingsSchema} from "attio"
 
-export const settingsSchema = {
+const settingsSchema = {
     workspace: {
         /**
          * Used to switch between Celsius and Fahrenheit temperature units

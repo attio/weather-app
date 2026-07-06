@@ -24,16 +24,11 @@ export function extractLocationData(
     fallbackLocation?: RawLocation | null
 ): LocationData | null {
     // Determine which location to use - treat each location as a whole unit
-    const hasValidPrimary =
-        primaryLocation?.latitude != null && primaryLocation?.longitude != null
+    const hasValidPrimary = primaryLocation?.latitude != null && primaryLocation?.longitude != null
     const hasValidFallback =
         fallbackLocation?.latitude != null && fallbackLocation?.longitude != null
 
-    const location = hasValidPrimary
-        ? primaryLocation
-        : hasValidFallback
-          ? fallbackLocation
-          : null
+    const location = hasValidPrimary ? primaryLocation : hasValidFallback ? fallbackLocation : null
 
     if (!location) {
         return null

@@ -12,24 +12,22 @@ import {z} from "zod"
 /**
  * Temperature unit type - either Celsius or Fahrenheit
  */
-export const TemperatureUnitSchema = z.enum(["celsius", "fahrenheit"])
+export type TemperatureUnit = "celsius" | "fahrenheit"
 
-export type TemperatureUnit = z.infer<typeof TemperatureUnitSchema>
+export interface ForecastProps {
+    latitude: number
+    longitude: number
+    temperature_unit: TemperatureUnit
+}
 
-export const ForecastPropsSchema = z.object({
-    latitude: z.number(),
-    longitude: z.number(),
-    temperature_unit: TemperatureUnitSchema,
-})
-
-export const CurrentUnitsSchema = z.object({
+const CurrentUnitsSchema = z.object({
     time: z.string(),
     interval: z.string(),
     temperature_2m: z.string(),
     weather_code: z.string(),
 })
 
-export const CurrentDataSchema = z.object({
+const CurrentDataSchema = z.object({
     time: z.number(),
     interval: z.number(),
     temperature_2m: z.number(),
@@ -48,11 +46,10 @@ export const CurrentForecastResponseSchema = z.object({
     current: CurrentDataSchema,
 })
 
-export type ForecastProps = z.infer<typeof ForecastPropsSchema>
 export type CurrentForecastResponse = z.infer<typeof CurrentForecastResponseSchema>
 
 // Daily Forecast Schemas for 7-day forecast
-export const DailyUnitsSchema = z.object({
+const DailyUnitsSchema = z.object({
     time: z.string(),
     weather_code: z.string(),
     precipitation_sum: z.string(),
@@ -62,7 +59,7 @@ export const DailyUnitsSchema = z.object({
     wind_speed_10m_max: z.string(),
 })
 
-export const DailyForecastSchema = z.object({
+const DailyForecastSchema = z.object({
     /** Array of unix timestamps */
     time: z.array(z.number()),
     /** WMO Weather interpretation codes */

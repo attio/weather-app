@@ -12,24 +12,31 @@ interface WeatherWidgetProps {
     object: string
 }
 
-function NoLocationWidget() {
+function WeatherTextWidget({children}: {children: React.ReactNode}) {
     return (
         <Widget.TextWidget>
             <Widget.Title>Weather forecast</Widget.Title>
+            {children}
+        </Widget.TextWidget>
+    )
+}
+
+function NoLocationWidget() {
+    return (
+        <WeatherTextWidget>
             <Widget.Text.Primary>No location</Widget.Text.Primary>
             <Widget.Text.Secondary>
                 Add a location to this record to see the forecast
             </Widget.Text.Secondary>
-        </Widget.TextWidget>
+        </WeatherTextWidget>
     )
 }
 
 function NoForecastWidget() {
     return (
-        <Widget.TextWidget>
-            <Widget.Title>Weather forecast</Widget.Title>
+        <WeatherTextWidget>
             <Widget.Text.Primary>No data</Widget.Text.Primary>
-        </Widget.TextWidget>
+        </WeatherTextWidget>
     )
 }
 
@@ -78,8 +85,7 @@ function CurrentForecast({code, location, temperature}: Props) {
     const status = WmoCodesMap.get(code)
 
     return (
-        <Widget.TextWidget>
-            <Widget.Title>Weather forecast</Widget.Title>
+        <WeatherTextWidget>
             <Widget.Text.Primary>
                 {status ? `${status.emoji} ${status.description}` : `No Data`}
             </Widget.Text.Primary>
@@ -87,7 +93,7 @@ function CurrentForecast({code, location, temperature}: Props) {
             <Widget.Decoration>
                 <TemperatureBadge temperature={temperature} />
             </Widget.Decoration>
-        </Widget.TextWidget>
+        </WeatherTextWidget>
     )
 }
 

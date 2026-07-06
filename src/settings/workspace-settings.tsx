@@ -4,22 +4,18 @@ import {useWorkspaceSettingsForm, type ComboboxOption} from "attio/client"
 const temperatureUnitsOptions = [
     {label: "Celsius", value: "celsius"},
     {label: "Fahrenheit", value: "fahrenheit"},
-  ] satisfies ComboboxOption[]
+] satisfies ComboboxOption[]
 
 function Page() {
-    const {
-        Form,
-        Section,
-        Combobox,
-    } = useWorkspaceSettingsForm()
+    const {Form, Section, Combobox} = useWorkspaceSettingsForm()
 
     return (
         <Form>
             <Section title="General">
-                <Combobox 
+                <Combobox
                     label="Select a temperature unit"
                     name="temperature_unit"
-                    options={temperatureUnitsOptions} 
+                    options={temperatureUnitsOptions}
                 />
             </Section>
         </Form>

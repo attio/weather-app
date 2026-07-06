@@ -1,3 +1,4 @@
+import {createLogger} from "../utils/logger"
 import {buildUrl} from "../utils/url"
 import {handleApiError} from "./handle-api-error"
 import {
@@ -5,6 +6,8 @@ import {
     DailyForecastResponseSchema,
     type TemperatureUnit,
 } from "./schema"
+
+const logger = createLogger("get-daily-forecast")
 
 /**
  * Fetches 7-day weather forecast from Open-Meteo API.
@@ -18,7 +21,7 @@ export default async function getDailyForecast(
     temperature_unit: TemperatureUnit
 ): Promise<DailyForecastResponse> {
     try {
-        console.log(`[Weather Forecast] Fetching 7-day forecast for ${latitude}, ${longitude}`)
+        logger.log(`Fetching 7-day forecast for ${latitude}, ${longitude}`)
 
         const url = buildUrl("https://api.open-meteo.com/v1/forecast", {
             latitude,
@@ -50,12 +53,12 @@ export default async function getDailyForecast(
         const data = await response.json()
         const validatedResponse = DailyForecastResponseSchema.parse(data)
 
-        console.log(`[Weather Forecast] Successfully fetched forecast data`)
+        logger.log(`Successfully fetched forecast data`)
 
         return validatedResponse
     } catch (error) {
         const errorMessage = error instanceof Error ? error.message : "Unknown error"
-        console.error(`[Weather Forecast Error] ${errorMessage}`)
+        logger.error(errorMessage)
         throw new Error(`Failed to fetch weather forecast: ${errorMessage}`)
     }
 }

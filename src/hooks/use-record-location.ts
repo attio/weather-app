@@ -33,7 +33,7 @@ interface CompanyLocation extends LocationData {
  * This hook retrieves location information for a person record from the Attio GraphQL API,
  * with fallback to their company's location if the person has no direct location.
  */
-export function usePersonLocation(recordId: string): PersonLocation | null {
+function usePersonLocation(recordId: string): PersonLocation | null {
     const {person} = useQuery(getPersonLocationById, {recordId})
 
     const locationData = extractLocationData(
@@ -57,7 +57,7 @@ export function usePersonLocation(recordId: string): PersonLocation | null {
  * This hook retrieves location information for a company record from the Attio GraphQL API
  * and returns it in a consistent, easy-to-use format.
  */
-export function useCompanyLocation(recordId: string): CompanyLocation | null {
+function useCompanyLocation(recordId: string): CompanyLocation | null {
     const {company} = useQuery(getCompanyLocationById, {recordId})
 
     const locationData = extractLocationData(company?.primary_location)

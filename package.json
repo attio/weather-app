@@ -7,19 +7,26 @@
     "attio": "attio",
     "dev": "attio dev",
     "build": "attio build",
-    "format": "biome format .",
-    "format-fix": "npx biome format --write .",
+    "format": "prettier --write \"src/**/*.{ts,tsx}\"",
+    "format:check": "prettier --check \"src/**/*.{ts,tsx}\"",
     "clean": "rm -rf lib && rm -rf dist",
-    "lint": "npx biome lint .",
-    "type-check": "tsc --noEmit",
-    "test": ""
+    "lint": "eslint \"src/**/*.{ts,tsx}\"",
+    "lint:fix": "eslint \"src/**/*.{ts,tsx}\" --fix",
+    "test": "vitest run",
+    "test:watch": "vitest",
+    "knip": "knip"
   },
   "devDependencies": {
-    "@biomejs/biome": "2.1.2",
+    "@typescript-eslint/eslint-plugin": "^8.34.1",
+    "@typescript-eslint/parser": "^8.34.1",
     "@types/node": "^24.0.4",
-    "@types/react": "19.1.0",
-    "node-fetch": "3.3.2",
-    "typescript": "5.8.3"
+    "@types/react": "19.2.14",
+    "eslint": "^9.29.0",
+    "knip": "^6.14.0",
+    "prettier": "^3.5.3",
+    "typescript": "5.8.3",
+    "vite": "^8.0.0",
+    "vitest": "^4.1.9"
   },
   "dependencies": {
     "@tanstack/react-query": "^5.90.17",
@@ -27,5 +34,15 @@
     "date-fns": "^4.1.0",
     "react": "19.1.0",
     "zod": "^4.0.14"
+  },
+  "packageManager": "pnpm@10.33.3",
+  "pnpm": {
+    "overrides": {
+      "rollup": "4.34.9"
+    },
+    "onlyBuiltDependencies": [
+      "esbuild",
+      "keytar"
+    ]
   }
 }

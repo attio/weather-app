@@ -11,11 +11,7 @@ interface UseDailyForecastParams {
 /**
  * Hook to fetch 7-day weather forecast data.
  */
-export function useDailyForecast({
-    latitude,
-    longitude,
-    temperature_unit,
-}: UseDailyForecastParams) {
+export function useDailyForecast({latitude, longitude, temperature_unit}: UseDailyForecastParams) {
     return useSuspenseQuery<DailyForecastResponse>({
         queryFn: () => getDailyForecast(latitude, longitude, temperature_unit),
         queryKey: ["daily-weather-forecast", latitude, longitude, temperature_unit],
