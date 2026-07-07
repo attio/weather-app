@@ -4,10 +4,6 @@ on:
   push:
     branches: [main]
 
-defaults:
-  run:
-    working-directory: apps/weather
-
 jobs:
   install:
     name: Install dependencies
@@ -21,11 +17,11 @@ jobs:
       - uses: actions/cache@v4
         id: cache
         with:
-          path: apps/weather/node_modules
-          key: node-modules-${{ hashFiles('apps/weather/pnpm-lock.yaml') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package.json') }}
       - name: Install
         if: steps.cache.outputs.cache-hit != 'true'
-        run: pnpm install --frozen-lockfile
+        run: pnpm install
 
   lint:
     name: Lint
@@ -39,8 +35,8 @@ jobs:
           node-version: 22
       - uses: actions/cache@v4
         with:
-          path: apps/weather/node_modules
-          key: node-modules-${{ hashFiles('apps/weather/pnpm-lock.yaml') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package.json') }}
       - run: pnpm run lint
 
   format:
@@ -55,8 +51,8 @@ jobs:
           node-version: 22
       - uses: actions/cache@v4
         with:
-          path: apps/weather/node_modules
-          key: node-modules-${{ hashFiles('apps/weather/pnpm-lock.yaml') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package.json') }}
       - run: pnpm run format:check
 
   test:
@@ -71,8 +67,8 @@ jobs:
           node-version: 22
       - uses: actions/cache@v4
         with:
-          path: apps/weather/node_modules
-          key: node-modules-${{ hashFiles('apps/weather/pnpm-lock.yaml') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package.json') }}
       - run: pnpm run test
 
   build:
@@ -87,8 +83,8 @@ jobs:
           node-version: 22
       - uses: actions/cache@v4
         with:
-          path: apps/weather/node_modules
-          key: node-modules-${{ hashFiles('apps/weather/pnpm-lock.yaml') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package.json') }}
       - run: pnpm run build
 
   knip:
@@ -103,6 +99,6 @@ jobs:
           node-version: 22
       - uses: actions/cache@v4
         with:
-          path: apps/weather/node_modules
-          key: node-modules-${{ hashFiles('apps/weather/pnpm-lock.yaml') }}
+          path: node_modules
+          key: node-modules-${{ hashFiles('package.json') }}
       - run: pnpm run knip
