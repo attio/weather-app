@@ -59,12 +59,12 @@ function ForecastContent({
     longitude: number
     location: string
 }) {
-    const {temperature_unit = "fahrenheit"} = useWorkspaceSettings()
+    const {temperature_unit} = useWorkspaceSettings()
 
     const {data} = useDailyForecast({
         latitude,
         longitude,
-        temperature_unit: temperature_unit as TemperatureUnit,
+        temperature_unit: (temperature_unit as TemperatureUnit) ?? "fahrenheit",
     })
 
     if (!data) {

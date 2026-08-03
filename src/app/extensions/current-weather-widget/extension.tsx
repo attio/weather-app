@@ -1,11 +1,10 @@
 import {Suspense} from "react"
-import type {App} from "attio"
-import {showToast, Widget} from "attio/client"
-import {TemperatureBadge} from "../../components/temperature-badge"
-import {useCurrentForecast} from "../../hooks/use-current-forecast"
-import {useRecordLocation} from "../../hooks/use-record-location"
-import {QueryProvider} from "../../utils/query-client"
-import {WmoCodesMap} from "../../utils/wmo-codes"
+import {showToast, Widget, Extensions} from "attio/client"
+import {TemperatureBadge} from "../../../components/temperature-badge"
+import {useCurrentForecast} from "../../../hooks/use-current-forecast"
+import {useRecordLocation} from "../../../hooks/use-record-location"
+import {QueryProvider} from "../../../utils/query-client"
+import {WmoCodesMap} from "../../../utils/wmo-codes"
 
 interface WeatherWidgetProps {
     id: string
@@ -97,7 +96,8 @@ function CurrentForecast({code, location, temperature}: Props) {
     )
 }
 
-const weatherWidget: App.Record.Widget = {
+export default Extensions.defineExtension({
+    type: "record-widget",
     id: "current-weather-widget",
     label: "Current Forecast Widget",
     Widget: ({recordId, object}) => {
@@ -109,6 +109,4 @@ const weatherWidget: App.Record.Widget = {
             </QueryProvider>
         )
     },
-}
-
-export default weatherWidget
+})

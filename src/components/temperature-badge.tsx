@@ -33,11 +33,16 @@ function formatTemperature(temperature: number, unit: TemperatureUnit): string {
  * Automatically uses the workspace temperature temperature_unit setting (celsius or fahrenheit).
  */
 export function TemperatureBadge({temperature}: TemperatureBadgeProps) {
-    const {temperature_unit = "fahrenheit"} = useWorkspaceSettings()
+    const {temperature_unit} = useWorkspaceSettings()
 
     return (
-        <Badge color={getTemperatureBadgeColor(temperature, temperature_unit as TemperatureUnit)}>
-            {formatTemperature(temperature, temperature_unit as TemperatureUnit)}
+        <Badge
+            color={getTemperatureBadgeColor(
+                temperature,
+                (temperature_unit as TemperatureUnit) ?? "fahrenheit"
+            )}
+        >
+            {formatTemperature(temperature, (temperature_unit as TemperatureUnit) ?? "fahrenheit")}
         </Badge>
     )
 }

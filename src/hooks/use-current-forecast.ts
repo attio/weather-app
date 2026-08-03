@@ -20,7 +20,7 @@ export function useCurrentForecast(
     {latitude, longitude}: UseCurrentForecastParams,
     {enabled = true}: UseCurrentForecastOptions = {}
 ) {
-    const {temperature_unit = "fahrenheit"} = useWorkspaceSettings()
+    const {temperature_unit} = useWorkspaceSettings()
 
     return useSuspenseQuery<CurrentForecastResponse | null>({
         queryFn: () =>
@@ -28,7 +28,7 @@ export function useCurrentForecast(
                 ? getWeatherForecast({
                       latitude,
                       longitude,
-                      temperature_unit: temperature_unit as TemperatureUnit,
+                      temperature_unit: (temperature_unit as TemperatureUnit) ?? "fahrenheit",
                   })
                 : null,
         queryKey: ["current-weather", latitude, longitude, temperature_unit],

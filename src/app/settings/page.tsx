@@ -1,13 +1,13 @@
-import type {App} from "attio"
-import {useWorkspaceSettingsForm, type ComboboxOption} from "attio/client"
+import {type ComboboxOption, Settings} from "attio/client"
+import schema from "./schema"
 
 const temperatureUnitsOptions = [
     {label: "Celsius", value: "celsius"},
     {label: "Fahrenheit", value: "fahrenheit"},
 ] satisfies ComboboxOption[]
 
-function Page() {
-    const {Form, Section, Combobox} = useWorkspaceSettingsForm()
+export default Settings.defineWorkspacePage(schema, () => {
+    const {Form, Section, Combobox} = Settings.useForm(schema)
 
     return (
         <Form>
@@ -20,10 +20,4 @@ function Page() {
             </Section>
         </Form>
     )
-}
-
-const workspaceSettings: App.Settings.Workspace = {
-    Page,
-}
-
-export default workspaceSettings
+})

@@ -1,5 +1,15 @@
 {
   "$schema": "https://unpkg.com/knip@6/schema.json",
-  "entry": ["src/app.ts", "src/app.settings.ts", "src/record/actions/**/*.tsx", "src/record/widgets/**/*.tsx", "src/**/*.server.ts"],
+  "entry": [
+    "src/app.ts",
+    "src/app.settings.ts",
+    "src/record/actions/**/*.tsx",
+    "src/record/widgets/**/*.tsx",
+    "src/app/extensions/**/extension.{ts,tsx}",
+    "src/app/settings/**/*.{ts,tsx}",
+    "src/app/events/**/*.{ts,tsx}",
+    "src/app/webhooks/**/*.{ts,tsx}",
+    "src/**/*.server.ts"
+  ],
   "project": ["src/**/*.{ts,tsx}"]
 }
